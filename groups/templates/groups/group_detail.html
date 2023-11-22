@@ -1,0 +1,52 @@
+{% extends "groups/group_base.html" %}
+{% block pregroup %}
+
+<h1>{{group.name}}</h1>
+<!-- 5:34 remember that with class based views a context dictionary gets passed that holds everything that
+the model has -->
+<!-- since group has a name attribute i can just call group.name (the lower case version of the model name) -->
+<h2>Member Count: {{group.members.count}}</h2>
+<!-- 6:20 model has a members so we call group.members and if we do group.members.counts
+we can get a count of all the members, this is something we didnt define but have access to this method
+check documentation for various things you can call off model objects -->
+
+<div class = "content">
+
+    {% if user in group.members.all %} 
+    <!-- 7:10 this basically means if the user is inside this array/list
+    of all the members inside of the group model do the following -->
+    <a href="{% url 'groups:leave' slug=group.slug %}" 
+    class = 'btn btn-lg btn-fill btn-warning'><span 
+    class = 'glyphicon glyphicon-remove-circle'></span>Leave</a>
+    <!-- 7:55 he doesnt say what its for but i guess its related to making the url work since slug fixes the urls i think
+    he says we will edit it later on -->
+    {% else %}
+    <a href="{% url 'groups:join' slug=group.slug %}" 
+    class = 'btn btn-lg btn-fill btn-warning'><span 
+    class = 'glyphicon glyphicon-ok-circle'></span>Join</a>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block group_content %}
+<!--  we dont want the group content (the list of actual posts to take up the entire page, we
+want them lined up abit -->
+<div class = "col-md-8">
+    <!-- if the group has no posts say there is no posts in the group -->
+    {% if group.posts.count == 0 %}
+        <h2>No posts in this group yet!</h2>
+    {% else %}
+        {% for post in group.posts.all %}
+            {% include "posts/_post.html" %}
+            <!-- 12:00 include is like saying extends but we insert/inject it right in the middle of an html file -->
+            <!-- since posts has alot of stuff going on like alot of html calls, template calls, template tags,
+            i dont want to include it all in the group_detail.html, instead we just take care of it in post.html
+            since this is going to be injected we put the _ to signify as a developer that this will be injected
+            dont need the underscore there it's just to tell me that this piece of html will be injected into other html files
+            using include -->
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

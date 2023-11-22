@@ -1,0 +1,25 @@
+<!-- 10:40 dont need to use extension because we use include when we want this injected -->
+<div class = "post media">
+    <h3 class="mr-5"><a href="{% url 'posts:for_user' username=post.user.username %}">@{{ post.user.username }}</a></h3>    
+    
+    <div class = "media-body">
+        <strong>{{post.user.username}}</strong>
+        <h5 class = 'media-heading'>{{ post.message_html|safe }}
+        <time class = 'time'><a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">{{ post.created_at }}</a></time>
+        </h5>
+        
+        <div class = "media-footer">
+            <!-- if the user is logged in and the post is theirs then they can delete it -->
+            {% if user.is_authenticated and post.user == user %}
+            <a href="{% url 'posts:delete' pk=post.pk %}" title = "delete" class = "btn btn-simple">
+                <span class = 'glyphicon glyphicon-remove text-danger' aria-hidden = 'true'></span>
+                <!-- 16:05 aria stands for accessible rich internet applications and that defines a way to make
+                web applications more accessiable to people with disabilities, so some people may have screen readers
+                that read stuf for them if they hover over things, so this element tells browsers not to display the
+                element and for screen readers not to read it -->
+                <span class = 'text-danger icon-label'>Delete</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

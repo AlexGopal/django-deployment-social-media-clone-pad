@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class = "container">
+        <div class = "row">
+            {% block pregroup %} {% endblock %}
+            {% block group_content %} {% endblock %}
+            {% block postgroup %} {% endblock %}
+            <!-- may not always need to use all three of these blocks
+            but this is just incase we want something before the group content,
+            during the group content, and after the group content -->
+        </div>
+    </div>
+{% endblock %}
